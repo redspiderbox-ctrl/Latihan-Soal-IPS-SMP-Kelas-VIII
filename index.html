@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan Soal IPS SMP Kelas VIII</title>
+  <style>
+    :root {
+      --primary-color: #1b5e20;
+      --primary-light: #4c8c4a;
+      --primary-dark: #003300;
+      --accent-color: #ffc107;
+      --bg-color: #f1f8e9;
+      --card-bg: #ffffff;
+      --wa-color: #25D366;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* --- HEADER & LOGO --- */
+    .header {
+      display: flex; align-items: center; gap: 20px; padding: 20px 5%;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)); color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Logo Container dengan Background Putih */
+    .logo-box {
+      background-color: #ffffff;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .logo-box img { width: 100%; height: auto; object-fit: contain; }
+
+    .header .title h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .header .title p { margin: 5px 0 0; font-size: 14px; opacity: 0.9; }
+
+    .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+    .student-info {
+      background: var(--card-bg); padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 25px; text-align: center; border-left: 5px solid var(--accent-color);
+    }
+    .student-info h1 { margin: 0 0 5px 0; color: var(--primary-color); font-size: 22px; }
+
+    /* --- SOAL --- */
+    .question-card {
+      background: var(--card-bg); margin-bottom: 15px; padding: 20px; border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee;
+    }
+    .question-text { font-weight: 600; margin-bottom: 15px; color: #2c3e50; }
+    .options-grid { display: grid; gap: 10px; }
+
+    .option-label {
+      display: flex; align-items: center; padding: 10px 15px; border: 1px solid #ddd;
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .option-label:hover { background: #f9f9f9; border-color: var(--primary-light); }
+    
+    .option-label input[type="radio"] {
+      appearance: none; width: 18px; height: 18px; border: 2px solid #aaa; border-radius: 50%;
+      margin-right: 12px; outline: none; position: relative;
+    }
+    .option-label input[type="radio"]:checked { border-color: var(--primary-color); }
+    .option-label input[type="radio"]:checked::after {
+      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%;
+    }
+
+    /* Feedback Colors */
+    .option-label.correct { background-color: #d4edda !important; border-color: #28a745 !important; color: #155724; }
+    .option-label.wrong { background-color: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
+    .option-label.dimmed { opacity: 0.5; }
+
+    /* --- BUTTONS --- */
+    .action-buttons { display: flex; justify-content: center; gap: 15px; margin: 40px 0; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 30px; font-size: 16px; font-weight: bold; border: none; border-radius: 30px;
+      cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--primary-color); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    
+    .btn-whatsapp { 
+      background: var(--wa-color); 
+      color: white; 
+      display: none; 
+    }
+    .btn-whatsapp:hover { background: #1ebe57; transform: translateY(-2px); }
+
+    .btn-reset { background: white; color: var(--primary-color); border: 2px solid var(--primary-color); display: none; }
+    .btn-reset:hover { background: #f1f8e9; }
+
+    /* Result Section di Web */
+    #result-section {
+      display: none; text-align: center; margin-top: 30px; padding: 30px; 
+      background: white; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-top: 6px solid var(--accent-color);
+    }
+    .score-display { font-size: 48px; font-weight: 800; color: var(--primary-color); margin: 10px 0; }
+    .grade-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; color: white; font-size: 14px; margin-bottom: 10px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-box">
+      <img src="https://z-cdn-media.chatglm.cn/files/56e90a19-085a-42bd-b085-dc0377e4104a.png?auth_key=1870629051-f1a20879f4e24714b010d99fedb74bbe-0-52bc6c2bfa5d1611e30f06b91dbf46d3" alt="Logo Sekolah">
+    </div>
+    <div class="title">
+      <h2>SMPK Frateran Ndao-Ende</h2>
+      <p>Latihan Soal IPS Kelas VIII</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="student-info">
+      <h1>Latihan Soal IPS</h1>
+      <p>Nama: <strong>Lambertus Adam Lowo Ngole</strong> | Kelas: <strong>VIII</strong></p>
+    </div>
+
+    <form id="quiz">
+      <!-- SOAL 1-10 -->
+      <div class="question-card" id="q1">
+        <div class="question-text">1. Ilmu yang mempelajari hubungan manusia dengan lingkungannya disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q1" value="A"> Ekonomi</label>
+          <label class="option-label"><input type="radio" name="q1" value="B"> Geografi</label>
+          <label class="option-label"><input type="radio" name="q1" value="C"> Sejarah</label>
+          <label class="option-label"><input type="radio" name="q1" value="D"> Sosiologi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q2">
+        <div class="question-text">2. Garis khayal yang membagi bumi menjadi belahan utara dan selatan adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q2" value="A"> Meridian</label>
+          <label class="option-label"><input type="radio" name="q2" value="B"> Khatulistiwa</label>
+          <label class="option-label"><input type="radio" name="q2" value="C"> Garis bujur</label>
+          <label class="option-label"><input type="radio" name="q2" value="D"> Garis lintang</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q3">
+        <div class="question-text">3. Kegiatan manusia untuk memenuhi kebutuhan hidup disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q3" value="A"> Produksi</label>
+          <label class="option-label"><input type="radio" name="q3" value="B"> Konsumsi</label>
+          <label class="option-label"><input type="radio" name="q3" value="C"> Distribusi</label>
+          <label class="option-label"><input type="radio" name="q3" value="D"> Kegiatan ekonomi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q4">
+        <div class="question-text">4. Pelaku ekonomi yang menghasilkan barang disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q4" value="A"> Konsumen</label>
+          <label class="option-label"><input type="radio" name="q4" value="B"> Distributor</label>
+          <label class="option-label"><input type="radio" name="q4" value="C"> Produsen</label>
+          <label class="option-label"><input type="radio" name="q4" value="D"> Pemerintah</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q5">
+        <div class="question-text">5. Peristiwa masa lalu yang penting disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q5" value="A"> Cerita</label>
+          <label class="option-label"><input type="radio" name="q5" value="B"> Legenda</label>
+          <label class="option-label"><input type="radio" name="q5" value="C"> Sejarah</label>
+          <label class="option-label"><input type="radio" name="q5" value="D"> Dongeng</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q6">
+        <div class="question-text">6. Keragaman suku dan budaya Indonesia disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q6" value="A"> Persatuan</label>
+          <label class="option-label"><input type="radio" name="q6" value="B"> Keanekaragaman</label>
+          <label class="option-label"><input type="radio" name="q6" value="C"> Keseragaman</label>
+          <label class="option-label"><input type="radio" name="q6" value="D"> Kesatuan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q7">
+        <div class="question-text">7. Kegiatan menyalurkan barang dari produsen ke konsumen disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q7" value="A"> Produksi</label>
+          <label class="option-label"><input type="radio" name="q7" value="B"> Konsumsi</label>
+          <label class="option-label"><input type="radio" name="q7" value="C"> Distribusi</label>
+          <label class="option-label"><input type="radio" name="q7" value="D"> Investasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q8">
+        <div class="question-text">8. Contoh sumber daya alam yang dapat diperbarui adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q8" value="A"> Minyak bumi</label>
+          <label class="option-label"><input type="radio" name="q8" value="B"> Batu bara</label>
+          <label class="option-label"><input type="radio" name="q8" value="C"> Emas</label>
+          <label class="option-label"><input type="radio" name="q8" value="D"> Hutan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q9">
+        <div class="question-text">9. Peta yang menggambarkan ketinggian wilayah disebut peta …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q9" value="A"> Politik</label>
+          <label class="option-label"><input type="radio" name="q9" value="B"> Tematik</label>
+          <label class="option-label"><input type="radio" name="q9" value="C"> Topografi</label>
+          <label class="option-label"><input type="radio" name="q9" value="D"> Administrasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q10">
+        <div class="question-text">10. Norma yang bersumber dari hati nurani adalah norma …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q10" value="A"> Agama</label>
+          <label class="option-label"><input type="radio" name="q10" value="B"> Kesusilaan</label>
+          <label class="option-label"><input type="radio" name="q10" value="C"> Hukum</label>
+          <label class="option-label"><input type="radio" name="q10" value="D"> Adat</label>
+        </div>
+      </div>
+
+      <!-- SOAL 11-50 (Dikonversi dari Loop menjadi Statis) -->
+      <div class="question-card" id="q11">
+        <div class="question-text">11. Kegiatan menggunakan barang atau jasa disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q11" value="A"> Konsumsi</label>
+          <label class="option-label"><input type="radio" name="q11" value="B"> Produksi</label>
+          <label class="option-label"><input type="radio" name="q11" value="C"> Distribusi</label>
+          <label class="option-label"><input type="radio" name="q11" value="D"> Investasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q12">
+        <div class="question-text">12. Penduduk yang pindah sementara disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q12" value="A"> Migrasi</label>
+          <label class="option-label"><input type="radio" name="q12" value="B"> Urbanisasi</label>
+          <label class="option-label"><input type="radio" name="q12" value="C"> Sirkulasi</label>
+          <label class="option-label"><input type="radio" name="q12" value="D"> Transmigrasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q13">
+        <div class="question-text">13. Interaksi sosial terjadi jika ada …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q13" value="A"> Kontak dan komunikasi</label>
+          <label class="option-label"><input type="radio" name="q13" value="B"> Manusia dan uang</label>
+          <label class="option-label"><input type="radio" name="q13" value="C"> Tujuan</label>
+          <label class="option-label"><input type="radio" name="q13" value="D"> Aturan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q14">
+        <div class="question-text">14. Mata pencaharian nelayan terdapat di wilayah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q14" value="A"> Pantai</label>
+          <label class="option-label"><input type="radio" name="q14" value="B"> Pegunungan</label>
+          <label class="option-label"><input type="radio" name="q14" value="C"> Dataran tinggi</label>
+          <label class="option-label"><input type="radio" name="q14" value="D"> Perkotaan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q15">
+        <div class="question-text">15. Kegiatan ekonomi di sawah disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q15" value="A"> Pertanian</label>
+          <label class="option-label"><input type="radio" name="q15" value="B"> Perikanan</label>
+          <label class="option-label"><input type="radio" name="q15" value="C"> Industri</label>
+          <label class="option-label"><input type="radio" name="q15" value="D"> Perdagangan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q16">
+        <div class="question-text">16. Perubahan sosial yang lambat disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q16" value="A"> Evolusi</label>
+          <label class="option-label"><input type="radio" name="q16" value="B"> Revolusi</label>
+          <label class="option-label"><input type="radio" name="q16" value="C"> Modernisasi</label>
+          <label class="option-label"><input type="radio" name="q16" value="D"> Globalisasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q17">
+        <div class="question-text">17. Pasar tempat bertemunya penjual dan pembeli disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q17" value="A"> Pasar</label>
+          <label class="option-label"><input type="radio" name="q17" value="B"> Toko</label>
+          <label class="option-label"><input type="radio" name="q17" value="C"> Koperasi</label>
+          <label class="option-label"><input type="radio" name="q17" value="D"> Bank</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q18">
+        <div class="question-text">18. Uang berfungsi sebagai …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q18" value="A"> Alat tukar</label>
+          <label class="option-label"><input type="radio" name="q18" value="B"> Alat produksi</label>
+          <label class="option-label"><input type="radio" name="q18" value="C"> Alat konsumsi</label>
+          <label class="option-label"><input type="radio" name="q18" value="D"> Hiburan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q19">
+        <div class="question-text">19. Sistem tanam paksa terjadi pada masa …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q19" value="A"> Kolonial Belanda</label>
+          <label class="option-label"><input type="radio" name="q19" value="B"> Kerajaan</label>
+          <label class="option-label"><input type="radio" name="q19" value="C"> Reformasi</label>
+          <label class="option-label"><input type="radio" name="q19" value="D"> Kemerdekaan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q20">
+        <div class="question-text">20. Kerajaan Majapahit mencapai puncak kejayaan pada masa …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q20" value="A"> Hayam Wuruk</label>
+          <label class="option-label"><input type="radio" name="q20" value="B"> Ken Arok</label>
+          <label class="option-label"><input type="radio" name="q20" value="C"> Gajah Mada</label>
+          <label class="option-label"><input type="radio" name="q20" value="D"> Raden Patah</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q21">
+        <div class="question-text">21. Lembaga sosial pendidikan adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q21" value="A"> Sekolah</label>
+          <label class="option-label"><input type="radio" name="q21" value="B"> Keluarga</label>
+          <label class="option-label"><input type="radio" name="q21" value="C"> Pasar</label>
+          <label class="option-label"><input type="radio" name="q21" value="D"> Masjid</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q22">
+        <div class="question-text">22. Contoh norma hukum adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q22" value="A"> Mencuri</label>
+          <label class="option-label"><input type="radio" name="q22" value="B"> Membuang sampah sembarangan</label>
+          <label class="option-label"><input type="radio" name="q22" value="C"> Melanggar lalu lintas</label>
+          <label class="option-label"><input type="radio" name="q22" value="D"> Bersikap sopan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q23">
+        <div class="question-text">23. Urbanisasi adalah perpindahan penduduk dari …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q23" value="A"> Desa ke kota</label>
+          <label class="option-label"><input type="radio" name="q23" value="B"> Kota ke desa</label>
+          <label class="option-label"><input type="radio" name="q23" value="C"> Pulau ke pulau</label>
+          <label class="option-label"><input type="radio" name="q23" value="D"> Negara ke negara</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q24">
+        <div class="question-text">24. Lapisan masyarakat disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q24" value="A"> Stratifikasi sosial</label>
+          <label class="option-label"><input type="radio" name="q24" value="B"> Mobilitas sosial</label>
+          <label class="option-label"><input type="radio" name="q24" value="C"> Integrasi</label>
+          <label class="option-label"><input type="radio" name="q24" value="D"> Diferensiasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q25">
+        <div class="question-text">25. Contoh perilaku konsumtif adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q25" value="A"> Membeli berlebihan</label>
+          <label class="option-label"><input type="radio" name="q25" value="B"> Menabung</label>
+          <label class="option-label"><input type="radio" name="q25" value="C"> Berhemat</label>
+          <label class="option-label"><input type="radio" name="q25" value="D"> Produksi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q26">
+        <div class="question-text">26. SDA yang tidak dapat diperbarui adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q26" value="A"> Batu bara</label>
+          <label class="option-label"><input type="radio" name="q26" value="B"> Hutan</label>
+          <label class="option-label"><input type="radio" name="q26" value="C"> Air</label>
+          <label class="option-label"><input type="radio" name="q26" value="D"> Udara</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q27">
+        <div class="question-text">27. Interaksi manusia dengan alam harus bersifat …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q27" value="A"> Bertanggung jawab</label>
+          <label class="option-label"><input type="radio" name="q27" value="B"> Eksploitasi</label>
+          <label class="option-label"><input type="radio" name="q27" value="C"> Sembarangan</label>
+          <label class="option-label"><input type="radio" name="q27" value="D"> Serakah</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q28">
+        <div class="question-text">28. Contoh pekerjaan di sektor jasa adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q28" value="A"> Dokter</label>
+          <label class="option-label"><input type="radio" name="q28" value="B"> Petani</label>
+          <label class="option-label"><input type="radio" name="q28" value="C"> Nelayan</label>
+          <label class="option-label"><input type="radio" name="q28" value="D"> Penambang</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q29">
+        <div class="question-text">29. Pelestarian hutan disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q29" value="A"> Reboisasi</label>
+          <label class="option-label"><input type="radio" name="q29" value="B"> Deforestasi</label>
+          <label class="option-label"><input type="radio" name="q29" value="C"> Abrasi</label>
+          <label class="option-label"><input type="radio" name="q29" value="D"> Erosi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q30">
+        <div class="question-text">30. Perdagangan antarnegara disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q30" value="A"> Ekspor impor</label>
+          <label class="option-label"><input type="radio" name="q30" value="B"> Ekspor</label>
+          <label class="option-label"><input type="radio" name="q30" value="C"> Impor</label>
+          <label class="option-label"><input type="radio" name="q30" value="D"> Barter</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q31">
+        <div class="question-text">31. Tujuan koperasi adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q31" value="A"> Kesejahteraan anggota</label>
+          <label class="option-label"><input type="radio" name="q31" value="B"> Keuntungan pribadi</label>
+          <label class="option-label"><input type="radio" name="q31" value="C"> Persaingan</label>
+          <label class="option-label"><input type="radio" name="q31" value="D"> Monopoli</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q32">
+        <div class="question-text">32. Konflik sosial dapat terjadi karena …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q32" value="A"> Perbedaan kepentingan</label>
+          <label class="option-label"><input type="radio" name="q32" value="B"> Kerja sama</label>
+          <label class="option-label"><input type="radio" name="q32" value="C"> Persatuan</label>
+          <label class="option-label"><input type="radio" name="q32" value="D"> Kesepakatan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q33">
+        <div class="question-text">33. Wilayah laut Indonesia diukur dari garis …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q33" value="A"> Pantai</label>
+          <label class="option-label"><input type="radio" name="q33" value="B"> Pangkal</label>
+          <label class="option-label"><input type="radio" name="q33" value="C"> Dasar</label>
+          <label class="option-label"><input type="radio" name="q33" value="D"> Surut</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q34">
+        <div class="question-text">34. Contoh budaya daerah adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q34" value="A"> Tarian daerah</label>
+          <label class="option-label"><input type="radio" name="q34" value="B"> Teknologi</label>
+          <label class="option-label"><input type="radio" name="q34" value="C"> Bahasa asing</label>
+          <label class="option-label"><input type="radio" name="q34" value="D"> Internet</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q35">
+        <div class="question-text">35. Sejarah ditulis berdasarkan …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q35" value="A"> Sumber</label>
+          <label class="option-label"><input type="radio" name="q35" value="B"> Fakta</label>
+          <label class="option-label"><input type="radio" name="q35" value="C"> Opini</label>
+          <label class="option-label"><input type="radio" name="q35" value="D"> Cerita</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q36">
+        <div class="question-text">36. Penduduk usia produktif berumur …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q36" value="A"> 15–64 tahun</label>
+          <label class="option-label"><input type="radio" name="q36" value="B"> 0–14 tahun</label>
+          <label class="option-label"><input type="radio" name="q36" value="C"> >65 tahun</label>
+          <label class="option-label"><input type="radio" name="q36" value="D"> Semua umur</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q37">
+        <div class="question-text">37. Norma adat bersumber dari …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q37" value="A"> Kebiasaan masyarakat</label>
+          <label class="option-label"><input type="radio" name="q37" value="B"> Undang-undang</label>
+          <label class="option-label"><input type="radio" name="q37" value="C"> Agama</label>
+          <label class="option-label"><input type="radio" name="q37" value="D"> Hati nurani</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q38">
+        <div class="question-text">38. Pasar modern contohnya …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q38" value="A"> Mall</label>
+          <label class="option-label"><input type="radio" name="q38" value="B"> Pasar tradisional</label>
+          <label class="option-label"><input type="radio" name="q38" value="C"> Pasar hewan</label>
+          <label class="option-label"><input type="radio" name="q38" value="D"> Pasar terapung</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q39">
+        <div class="question-text">39. Globalisasi menyebabkan …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q39" value="A"> Perubahan gaya hidup</label>
+          <label class="option-label"><input type="radio" name="q39" value="B"> Kemunduran</label>
+          <label class="option-label"><input type="radio" name="q39" value="C"> Keterbelakangan</label>
+          <label class="option-label"><input type="radio" name="q39" value="D"> Isolasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q40">
+        <div class="question-text">40. Kegiatan ekonomi rumah tangga konsumsi adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q40" value="A"> Konsumsi</label>
+          <label class="option-label"><input type="radio" name="q40" value="B"> Produksi</label>
+          <label class="option-label"><input type="radio" name="q40" value="C"> Distribusi</label>
+          <label class="option-label"><input type="radio" name="q40" value="D"> Investasi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q41">
+        <div class="question-text">41. Gunung api termasuk kenampakan …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q41" value="A"> Alam</label>
+          <label class="option-label"><input type="radio" name="q41" value="B"> Buatan</label>
+          <label class="option-label"><input type="radio" name="q41" value="C"> Sosial</label>
+          <label class="option-label"><input type="radio" name="q41" value="D"> Budaya</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q42">
+        <div class="question-text">42. Nilai guna suatu barang disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q42" value="A"> Nilai pakai</label>
+          <label class="option-label"><input type="radio" name="q42" value="B"> Harga</label>
+          <label class="option-label"><input type="radio" name="q42" value="C"> Manfaat</label>
+          <label class="option-label"><input type="radio" name="q42" value="D"> Produksi</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q43">
+        <div class="question-text">43. Contoh interaksi sosial asosiatif adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q43" value="A"> Kerja sama</label>
+          <label class="option-label"><input type="radio" name="q43" value="B"> Persaingan</label>
+          <label class="option-label"><input type="radio" name="q43" value="C"> Konflik</label>
+          <label class="option-label"><input type="radio" name="q43" value="D"> Pertentangan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q44">
+        <div class="question-text">44. Barang yang digunakan untuk produksi disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q44" value="A"> Barang modal</label>
+          <label class="option-label"><input type="radio" name="q44" value="B"> Barang konsumsi</label>
+          <label class="option-label"><input type="radio" name="q44" value="C"> Barang mentah</label>
+          <label class="option-label"><input type="radio" name="q44" value="D"> Barang bebas</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q45">
+        <div class="question-text">45. Kegiatan ekspor berarti …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q45" value="A"> Menjual ke luar negeri</label>
+          <label class="option-label"><input type="radio" name="q45" value="B"> Membeli dari luar negeri</label>
+          <label class="option-label"><input type="radio" name="q45" value="C"> Menukar</label>
+          <label class="option-label"><input type="radio" name="q45" value="D"> Menyimpan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q46">
+        <div class="question-text">46. Faktor pendorong urbanisasi adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q46" value="A"> Lapangan kerja</label>
+          <label class="option-label"><input type="radio" name="q46" value="B"> Kemiskinan</label>
+          <label class="option-label"><input type="radio" name="q46" value="C"> Bencana</label>
+          <label class="option-label"><input type="radio" name="q46" value="D"> Kepadatan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q47">
+        <div class="question-text">47. Kegiatan ekonomi yang menghasilkan jasa disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q47" value="A"> Jasa</label>
+          <label class="option-label"><input type="radio" name="q47" value="B"> Industri</label>
+          <label class="option-label"><input type="radio" name="q47" value="C"> Pertanian</label>
+          <label class="option-label"><input type="radio" name="q47" value="D"> Perdagangan</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q48">
+        <div class="question-text">48. Contoh lembaga politik adalah …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q48" value="A"> Partai politik</label>
+          <label class="option-label"><input type="radio" name="q48" value="B"> Sekolah</label>
+          <label class="option-label"><input type="radio" name="q48" value="C"> Keluarga</label>
+          <label class="option-label"><input type="radio" name="q48" value="D"> Pasar</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q49">
+        <div class="question-text">49. Perubahan sosial akibat teknologi disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q49" value="A"> Modernisasi</label>
+          <label class="option-label"><input type="radio" name="q49" value="B"> Tradisional</label>
+          <label class="option-label"><input type="radio" name="q49" value="C"> Stagnasi</label>
+          <label class="option-label"><input type="radio" name="q49" value="D"> Konservatif</label>
+        </div>
+      </div>
+
+      <div class="question-card" id="q50">
+        <div class="question-text">50. Sikap menghargai perbedaan disebut …</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="q50" value="A"> Toleransi</label>
+          <label class="option-label"><input type="radio" name="q50" value="B"> Egois</label>
+          <label class="option-label"><input type="radio" name="q50" value="C"> Diskriminasi</label>
+          <label class="option-label"><input type="radio" name="q50" value="D"> Fanatik</label>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn btn-primary" id="submitBtn" onclick="checkAnswers()">Lihat Nilai</button>
+        
+        <!-- Tombol WhatsApp -->
+        <a href="#" target="_blank" id="waBtn" class="btn btn-whatsapp">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Kirim Hasil ke WhatsApp
+        </a>
+
+        <button type="button" class="btn btn-reset" id="resetBtn" onclick="resetQuiz()">Ulangi Latihan</button>
+      </div>
+    </form>
+
+    <!-- Hasil di Web -->
+    <div id="result-section">
+      <h3>Hasil Latihan Soal IPS</h3>
+      <div class="grade-badge" id="gradeBadge">-</div>
+      <div class="score-display"><span id="scoreVal">0</span> / 100</div>
+      <p id="feedbackText">Terima kasih telah mengerjakan latihan soal.</p>
+    </div>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      let score = 0;
+      const total = 50;
+      const form = document.getElementById('quiz');
+      const questionCards = document.querySelectorAll('.question-card');
+      
+      // Kunci Jawaban (Sesuai input user)
+      const kunci = {
+        q1:"B", q2:"B", q3:"D", q4:"C", q5:"C",
+        q6:"B", q7:"C", q8:"D", q9:"C", q10:"B",
+        q11:"A", q12:"C", q13:"A", q14:"A", q15:"A",
+        q16:"A", q17:"A", q18:"A", q19:"A", q20:"A",
+        q21:"A", q22:"C", q23:"A", q24:"A", q25:"A",
+        q26:"A", q27:"A", q28:"A", q29:"A", q30:"A",
+        q31:"A", q32:"A", q33:"A", q34:"A", q35:"B",
+        q36:"A", q37:"A", q38:"A", q39:"A", q40:"A",
+        q41:"A", q42:"A", q43:"A", q44:"A", q45:"A",
+        q46:"A", q47:"A", q48:"A", q49:"A", q50:"A"
+      };
+
+      questionCards.forEach((card, index) => {
+        const qNum = index + 1;
+        const inputs = card.querySelectorAll('input[type=radio]');
+        inputs.forEach(input => input.disabled = true);
+
+        const selected = card.querySelector('input[type=radio]:checked');
+        const labels = card.querySelectorAll('.option-label');
+        const correctInput = card.querySelector(`input[type=radio][value="${kunci['q'+qNum]}"]`);
+
+        if (selected) {
+          if (selected.value === kunci['q'+qNum]) {
+            score++;
+            selected.parentElement.classList.add('correct');
+          } else {
+            selected.parentElement.classList.add('wrong');
+            labels.forEach(lbl => {
+              if(lbl !== selected.parentElement) lbl.classList.add('dimmed');
+            });
+            if(correctInput) correctInput.parentElement.classList.add('correct');
+          }
+        } else {
+          labels.forEach(lbl => lbl.classList.add('dimmed'));
+          if(correctInput) {
+            correctInput.parentElement.classList.remove('dimmed');
+            correctInput.parentElement.classList.add('correct');
+          }
+        }
+      });
+
+      // Hitung Nilai (Skala 100)
+      const finalScore = Math.round((score * 100) / total);
+      document.getElementById('scoreVal').textContent = finalScore;
+      
+      // Tentukan Grade
+      let gradeText = '';
+      let gradeColor = '';
+      let feedback = '';
+
+      if (finalScore >= 90) {
+        gradeText = 'A (Sangat Baik)'; gradeColor = '#28a745'; feedback = 'Luar biasa! Pemahaman IPS kamu sangat luas.';
+      } else if (finalScore >= 80) {
+        gradeText = 'B (Baik)'; gradeColor = '#17a2b8'; feedback = 'Bagus! Terus pelajari dinamika sosial dan lingkungan.';
+      } else if (finalScore >= 70) {
+        gradeText = 'C (Cukup)'; gradeColor = '#ffc107'; feedback = 'Cukup baik, tingkatkan lagi memahami sejarah dan ekonomi.';
+      } else {
+        gradeText = 'D (Kurang)'; gradeColor = '#dc3545'; feedback = 'Jangan menyerah, ayo baca lagi materi IPS dengan tekun.';
+      }
+
+      const gradeBadge = document.getElementById('gradeBadge');
+      gradeBadge.textContent = gradeText;
+      gradeBadge.style.backgroundColor = gradeColor;
+      document.getElementById('feedbackText').textContent = feedback;
+
+      // --- LOGIKA WHATSAPP ---
+      const namaSiswa = "Lambertus Adam Lowo Ngole";
+      const kelasSiswa = "VIII";
+      const tanggal = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      let pesan = `*LAPORAN HASIL LATIHAN IPS*%0A%0A`;
+      pesan += `👤 Nama Siswa: ${namaSiswa}%0A`;
+      pesan += `🏫 Kelas: ${kelasSiswa}%0A`;
+      pesan += `📅 Tanggal: ${tanggal}%0A`;
+      pesan += `--------------------------------%0A`;
+      pesan += `🌍 *Nilai Akhir: ${finalScore}*%0A`;
+      pesan += `🏆 Predikat: ${gradeText}%0A`;
+      pesan += `--------------------------------%0A`;
+      pesan += `${feedback}%0A%0A`;
+      pesan += `Mohon diperiksa, terima kasih.`;
+
+      // Update Link Tombol WhatsApp
+      document.getElementById('waBtn').href = `https://wa.me/?text=${pesan}`;
+
+      // Tampilkan UI
+      document.getElementById('result-section').style.display = 'block';
+      document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+      
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('waBtn').style.display = 'inline-flex';
+      document.getElementById('resetBtn').style.display = 'inline-block';
+    }
+
+    function resetQuiz() {
+      const form = document.getElementById('quiz');
+      form.reset();
+      
+      document.querySelectorAll('.option-label').forEach(el => {
+        el.classList.remove('correct', 'wrong', 'dimmed');
+      });
+      
+      document.querySelectorAll('input[type=radio]').forEach(el => el.disabled = false);
+
+      document.getElementById('result-section').style.display = 'none';
+      document.getElementById('submitBtn').style.display = 'inline-block';
+      document.getElementById('waBtn').style.display = 'none';
+      document.getElementById('resetBtn').style.display = 'none';
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
